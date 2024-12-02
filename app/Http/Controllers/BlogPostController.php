@@ -42,13 +42,15 @@ class BlogPostController extends Controller
 
     public function dashboard(Request $request)
     {
+        // Get the filter from the request, default to 'mine'
         $filter = $request->input('filter', 'mine');
-
-        if ($filter == 'all') {
-            $posts = BlogPost::all();
-        } else {
-            $posts = BlogPost::where('user_id', Auth::id())->get();
-        }
+    
+        // Use pagination to fetch posts
+        $posts = $filter == 'all'
+            ? BlogPost::paginate(10) // Fetch all posts with pagination
+            : BlogPost::where('user_id', Auth::id())->paginate(10); // Fetch only the user's posts with pagination
+    
+        // Pass the paginated posts and the filter to the view
         return view('dashboard', compact('posts', 'filter'));
     }
 }
