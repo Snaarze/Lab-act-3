@@ -9,6 +9,13 @@
 <body class="h-screen w-screen bg-gray-100 flex justify-center items-center">
     <div class="bg-white shadow-lg rounded-lg p-8 w-96">
         <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+        @if (session('success'))
+            <div class="bg-green-100 text-green-800 p-2 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Display error message if login failed -->
         @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-2 rounded mb-4">
                 <ul>

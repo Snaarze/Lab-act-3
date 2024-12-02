@@ -28,7 +28,7 @@
         <!-- Blog Post Form -->
         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h2 class="text-2xl font-bold mb-4">Create a New Blog Post</h2>
-            <form method="POST" action="{{ route('blog.store') }}">
+            <form method="POST" action="{{ route('store') }}">
                 @csrf
                 <div class="space-y-4">
                     <div>
@@ -45,6 +45,7 @@
                 </div>
             </form>
         </div>
+
 
         <!-- Displaying Blog Posts -->
         <div class="bg-white shadow-lg rounded-lg p-6">

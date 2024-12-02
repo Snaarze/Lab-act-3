@@ -10,7 +10,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // Show the registration form
-    public function registration()
+    public function showRegistrationForm()
     {
         return view('registration');
     }
@@ -29,6 +29,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        session()->flash('success', 'Account created successfully. Please log in.');
 
         return redirect()->route('login.form')->with('success', 'Account created successfully. Please log in.');
     }
@@ -49,9 +51,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
+            session()->flash('success', 'Welcome back, ' . Auth::user()->name . '!');
             return redirect()->route('dashboard');
-        }
-
+        }             
         return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
