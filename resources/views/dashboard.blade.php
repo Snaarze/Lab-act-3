@@ -17,7 +17,6 @@
             </div>
         @endif
 
-        <!-- Logout Button -->
         <form action="{{ route('logout') }}" method="POST" class="inline">
             @csrf
             <button type="submit" class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 mb-6">
@@ -25,7 +24,6 @@
             </button>
         </form>
 
-        <!-- Blog Post Form -->
         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h2 class="text-2xl font-bold mb-4">Create a New Blog Post</h2>
             <form method="POST" action="{{ route('store') }}">
@@ -46,16 +44,22 @@
             </form>
         </div>
 
-
-        <!-- Displaying Blog Posts -->
+        <div class="mb-6">
+            <form action="{{ route('dashboard') }}" method="GET">
+                <select name="filter" class="border px-4 py-2 rounded" onchange="this.form.submit()">
+                    <option value="mine" {{ $filter == 'mine' ? 'selected' : '' }}>My Posts</option>
+                    <option value="all" {{ $filter == 'all' ? 'selected' : '' }}>All Posts</option>
+                </select>
+            </form>
+        </div>
         <div class="bg-white shadow-lg rounded-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">Your Blog Posts</h2>
+            <h2 class="text-2xl font-bold mb-4">{{ $filter == 'mine' ? 'Your Blog Posts' : 'All Blog Posts' }}</h2>
             @foreach ($posts as $post)
                 <div class="mb-4">
                     <h3 class="text-xl font-semibold">{{ $post->title }}</h3>
                     <p class="text-gray-600">{{ Str::limit($post->content, 100) }}</p>
                     <p class="text-sm text-gray-500">By: {{ $post->user->name }}</p>
-                    <a href="#" class="text-blue-500 hover:text-blue-600">Read More</a>
+                    <a href="{{ route('show', $post->id) }}" class="text-blue-500 hover:text-blue-600">Read More</a>
                 </div>
             @endforeach
         </div>

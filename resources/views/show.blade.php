@@ -12,7 +12,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <!-- Blog Post Content -->
+
     <div class="bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-3xl font-bold mb-4">{{ $post->title }}</h1>
         <p class="text-gray-600 mb-4">{{ $post->content }}</p>

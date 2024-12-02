@@ -32,24 +32,23 @@ class BlogPostController extends Controller
 
         session()->put('success', 'Blog post created successfully!');
 
-        // Redirect to the new blog post
         return redirect()->route('show', $post->id)->with('success', 'Blog post created successfully!');
     }
-
-    // Show a specific blog post
     public function show($id)
     {
         $post = BlogPost::findOrFail($id);
         return view('show', compact('post'));
     }
 
-    // Display the dashboard with user's blog posts
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        // Fetch the user's blog posts
-        $posts = BlogPost::where('user_id', Auth::id())->get();
+        $filter = $request->input('filter', 'mine');
 
-        // Return the dashboard view with posts data
-        return view('dashboard', compact('posts'));
+        if ($filter == 'all') {
+            $posts = BlogPost::all();
+        } else {
+            $posts = BlogPost::where('user_id', Auth::id())->get();
+        }
+        return view('dashboard', compact('posts', 'filter'));
     }
 }
