@@ -1,33 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BlogPostController;
 
 Route::get('/', function () {
-    return redirect()->route('registration.form');
+    return view('welcome');
 });
 
-// Registration Routes
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('registration.form');
-Route::post('/register', [AuthController::class, 'register'])->name('registration');
-
-// Login Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-
-// Dashboard Route (Protected by auth middleware)
-Route::get('/dashboard', [BlogPostController::class, 'dashboard'])->name('dashboard')->middleware('auth');
-
-// Logout Route (Handles logout functionality)
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('blog/create', [BlogPostController::class, 'create'])->name('create');
-    Route::post('blog', [BlogPostController::class, 'store'])->name('store');
-    Route::get('blog/{id}', [BlogPostController::class, 'show'])->name('show');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
+require __DIR__.'/auth.php';
